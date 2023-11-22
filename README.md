@@ -11,7 +11,7 @@ A.I. :D
 - **Few-Shot Learning Support**: Allows for the provision of few-shot prompt examples to guide the LLM in producing the desired output.
 - **Flexible Schema Definition**: Supports both TypeScript and JSON schema for defining the output structure of LLM responses.
 - **OpenAI Integration**: Integrates with OpenAI's official library to provide a seamless experience.
-- **Customizable**: Allows for customization LLM models, just implement the `LLMQuery` function.
+- **Customizable**: Allows for customization LLM models, just implement the `LLMQuery` function. [Example](https://github.com/JacobLinCool/aid/blob/main/packages/aid/tests/cohere.test.ts)
 
 ## Installation
 
