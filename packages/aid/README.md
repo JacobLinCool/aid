@@ -27,7 +27,7 @@ First, import the necessary modules and set up your OpenAI instance:
 
 ```ts
 import { OpenAI } from "openai";
-import { Aid } from "aid-library";
+import { Aid } from "@ai-d/aid";
 
 const openai = new OpenAI({ apiKey: "your-api-key" });
 const aid = Aid.from(openai, { model: "gpt-4-1106-preview" });
