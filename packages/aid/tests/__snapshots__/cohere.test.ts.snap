@@ -1,0 +1,20 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Cohere > Custom Model 1`] = `
+{
+  "keywords": [
+    "AI",
+    "machine intelligence",
+    "deep learning",
+    "artificial neural networks",
+    "natural language processing",
+    "optimization",
+    "planning",
+    "logic",
+    "robotics",
+    "computer science",
+    "industry applications",
+  ],
+  "summary": "Artificial intelligence (AI) is the study of intelligent machines and their applications, which aim to mimic human intelligence in problem-solving and decision-making. AI technologies are widely used in various fields, including industry, government, and science, for tasks such as web search, recommendations, natural language processing, self-driving cars, and creative applications. While AI has faced challenges and setbacks since its establishment as an academic discipline in 1956, advancements in deep learning have spurred increased interest and funding in recent years.",
+}
+`;
