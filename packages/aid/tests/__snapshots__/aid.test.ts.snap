@@ -1,0 +1,33 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Aid > Few-Shot Learning 1`] = `
+{
+  "feedback": "文章內容完整，清楚回答了題目的兩個部分。組織結構良好，先描述自己的經歷，然後談論未來的計劃。文法正確，用字遣詞恰當，例如使用了\\"exhibited good behavior\\"和\\"fostering autonomy\\"等精確詞彙。標點符號和大小寫使用正確，整體表達流暢，沒有明顯錯誤。",
+  "grade": 5,
+}
+`;
+
+exports[`Aid > Few-Shot Learning 2`] = `
+{
+  "feedback": "內容簡潔，但基本符合題目要求。組織合理，但篇幅較短，未能深入探討獎勵方式的有效性或適當性。文法和用字遣詞基本正確，但表達方式過於簡單，缺乏豐富的詞彙和複雜句型。建議未來作文時能夠提供更多細節和例子，以增強文章的說服力。",
+  "grade": 3,
+}
+`;
+
+exports[`Aid > Type Constraints 1`] = `
+{
+  "keywords": [
+    "artificial intelligence",
+    "AI",
+    "machine intelligence",
+    "computer science",
+    "deep learning",
+    "search engines",
+    "recommendation systems",
+    "voice assistants",
+    "self-driving cars",
+    "natural language processing",
+  ],
+  "summary": "Artificial intelligence (AI) is the simulation of human intelligence in machines, aimed at performing tasks that typically require human intelligence. It encompasses a variety of applications such as search engines, recommendation systems, voice assistants, self-driving cars, and gaming. AI research, which began in 1956, has experienced ups and downs but saw a resurgence with the advent of deep learning in 2012. AI research includes reasoning, learning, perception, and more, utilizing tools from various disciplines including computer science, psychology, and neuroscience.",
+}
+`;
