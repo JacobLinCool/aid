@@ -31,7 +31,7 @@ export class Aid {
 			if (opt?.examples) {
 				for (const [input, output] of opt.examples) {
 					messages.push({ role: "user", content: input });
-					messages.push({ role: "system", content: JSON.stringify(output) });
+					messages.push({ role: "assistant", content: JSON.stringify(output) });
 				}
 			}
 			messages.push({ role: "user", content: input });

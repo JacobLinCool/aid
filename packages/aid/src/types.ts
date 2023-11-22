@@ -14,7 +14,7 @@ export interface AidTaskOptions<In extends string, Out> {
 	/**
 	 * The few-shot prompt examples.
 	 */
-	examples?: [In, Out][];
+	examples?: [string, Out][];
 	/**
 	 * The output schema strategy.
 	 * @default "json-schema"
