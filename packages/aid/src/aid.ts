@@ -1,22 +1,24 @@
 import debug from "debug";
 import type { OpenAI } from "openai";
-import type { ZodIssue, z } from "zod";
+import type { z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
 import { printNode, zodToTs } from "zod-to-ts";
-import { AidTaskOptions, LLMQuery } from "./types";
+import type { AidInput, AidTaskOptions, AidTaskRunner, LLMQuery, Message } from "./types";
 
 const log = debug("aid");
 
 export class Aid {
 	constructor(protected q: LLMQuery) {}
 
-	task<In extends string, Out>(
+	task<Out>(
 		goal: string,
 		expected: z.ZodType<Out>,
-		opt?: AidTaskOptions<In, Out>,
-	): (input: In) => Promise<{ result: Out; errors: ZodIssue[] }> {
-		return async (input: In) => {
-			const messages: { role: "system" | "user" | "assistant"; content: string }[] = [
+		opt?: AidTaskOptions<Out>,
+	): AidTaskRunner<Out> {
+		const default_input: AidInput =
+			opt?.default ?? "Follows the instruction and give me the disired output.";
+		return async (input = default_input) => {
+			const messages: Message[] = [
 				{
 					role: "system",
 					content:
@@ -34,6 +36,7 @@ export class Aid {
 					messages.push({ role: "assistant", content: JSON.stringify(output) });
 				}
 			}
+
 			messages.push({ role: "user", content: input });
 
 			log("messages", messages);
