@@ -1,5 +1,11 @@
 # @ai-d/aid
 
+## 0.1.0
+
+### Minor Changes
+
+-   [`4bec7de`](https://github.com/JacobLinCool/aid/commit/4bec7de5b0bed2f5cedd071f663cba89b984e451) Thanks [@JacobLinCool](https://github.com/JacobLinCool)! - Support Vision Model
+
 ## 0.0.2
 
 ### Patch Changes
