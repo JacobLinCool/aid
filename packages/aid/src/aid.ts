@@ -3,6 +3,7 @@ import type { OpenAI } from "openai";
 import type { z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
 import { printNode, zodToTs } from "zod-to-ts";
+import { OpenAIQuery } from "./query/openai";
 import type { AidInput, AidTaskOptions, AidTaskRunner, LLMQuery, Message } from "./types";
 
 const log = debug("aid");
@@ -61,26 +62,7 @@ export class Aid {
 		openai: OpenAI,
 		param: Omit<OpenAI.Chat.ChatCompletionCreateParamsNonStreaming, "messages">,
 	): Aid {
-		const q: LLMQuery = async (
-			messages: { role: "system" | "user" | "assistant"; content: string }[],
-		) => {
-			const payload: OpenAI.Chat.ChatCompletionCreateParamsNonStreaming = {
-				temperature: 0,
-				...param,
-				messages,
-				response_format: { type: "json_object" },
-			};
-
-			const res = await openai.chat.completions.create(payload);
-			log({ fingerprint: res.system_fingerprint, usage: res.usage });
-
-			const text = res.choices[0].message.content;
-			if (!text) {
-				throw new Error("No text returned from OpenAI");
-			}
-
-			return text;
-		};
+		const q = OpenAIQuery(openai, param);
 		return new Aid(q);
 	}
 }
