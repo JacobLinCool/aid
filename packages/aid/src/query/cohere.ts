@@ -1,5 +1,5 @@
 import debug from "debug";
-import type { LLMQuery } from "../types";
+import type { BaseChatMessage, QueryEngine } from "../types";
 
 const log = debug("aid:cohere");
 
@@ -11,8 +11,11 @@ export interface CohereQueryOptions {
 	prompt_truncation: string;
 }
 
-export const CohereQuery = (token: string, opt: Partial<CohereQueryOptions>): LLMQuery => {
-	const q: LLMQuery = async (messages) => {
+export const CohereQuery = (
+	token: string,
+	opt?: Partial<CohereQueryOptions>,
+): QueryEngine<BaseChatMessage[]> => {
+	const q: QueryEngine<BaseChatMessage[]> = async (messages) => {
 		const message = messages[messages.length - 1].content;
 		const chat_history = messages.slice(0, -1).map((message) => ({
 			role: message.role === "user" ? "User" : "Chatbot",

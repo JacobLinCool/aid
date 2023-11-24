@@ -1,0 +1,11 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Vision > Vision Task 1`] = `
+{
+  "age": "teen",
+  "background": "plain white",
+  "clothing": "black shirt with a brown tie",
+  "emotion": "neutral",
+  "gender": "boy",
+}
+`;

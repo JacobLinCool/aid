@@ -1,7 +1,7 @@
 import debug from "debug";
 import { describe, expect, it } from "vitest";
 import { z } from "zod";
-import { Aid, LLMQuery } from "../src";
+import { Aid, BaseChatMessage, QueryEngine } from "../src";
 import { WIKI_AI } from "./fixtures/articles";
 
 debug.enable("aid");
@@ -16,7 +16,7 @@ describe("Cohere", () => {
 				return;
 			}
 
-			const q: LLMQuery = async (messages) => {
+			const q: QueryEngine<BaseChatMessage[]> = async (messages) => {
 				const message = messages[messages.length - 1].content;
 				const chat_history = messages.slice(0, -1).map((message) => ({
 					role: message.role === "user" ? "User" : "Chatbot",
@@ -44,7 +44,7 @@ describe("Cohere", () => {
 				return result.text;
 			};
 
-			const aid = new Aid(q);
+			const aid = Aid.chat(q);
 
 			const analyze = aid.task(
 				"Summarize and extract keywords",

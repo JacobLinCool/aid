@@ -1,30 +1,42 @@
-import type { ZodIssue } from "zod";
+import type { OpenAI } from "openai";
+import type { ZodIssue, ZodSchema } from "zod";
 
 export type PromiseOr<T> = T | Promise<T>;
 
-export type LLMQuery = (
-	messages: {
-		role: "system" | "user" | "assistant";
-		content: string;
-	}[],
-) => PromiseOr<string>;
+export type QueryEngine<QueryPayload> = (payload: QueryPayload) => PromiseOr<string>;
 
-export type AidInput = string;
+export type FormatEngine<TaskPayload, QueryPayload> = (
+	payload: TaskPayload,
+	schema: ZodSchema,
+) => PromiseOr<QueryPayload>;
+
+export type TaskBuilder<TaskGoal, CaseParam, TaskPayload> = (
+	goal: TaskGoal,
+	param: CaseParam | undefined,
+	examples: [CaseParam, unknown][],
+) => PromiseOr<TaskPayload>;
+
+export type BaseChatParam =
+	| string
+	| {
+			text: string;
+	  };
+
+export type VisionChatParam =
+	| string
+	| {
+			text?: string;
+			images?: OpenAI.Chat.ChatCompletionContentPartImage.ImageURL[];
+	  };
 
 /**
- * Options for an custom Aid Task.
+ * Options for a custom Aid Task.
  */
-export interface AidTaskOptions<Out> {
+export interface AidTaskOptions<In, Out> {
 	/**
 	 * The few-shot prompt examples.
 	 */
-	examples?: [AidInput, Out][];
-
-	/**
-	 * The output schema strategy.
-	 * @default "json-schema"
-	 */
-	strategy?: "ts" | "json-schema";
+	examples?: [In, Out][];
 
 	/**
 	 * Whether to check the output against the schema.
@@ -35,11 +47,14 @@ export interface AidTaskOptions<Out> {
 	/**
 	 * The default input (last user message) if no input is provided.
 	 */
-	default?: AidInput;
+	default?: In;
 }
 
-export type AidTaskRunner<Out> = (input?: AidInput) => Promise<{ result: Out; errors: ZodIssue[] }>;
+export type AidTaskRunner<In, Out> = (input?: In) => Promise<{ result: Out; errors: ZodIssue[] }>;
 
-export type MessageRole = "system" | "user" | "assistant";
+export type BaseChatMessageRole = "system" | "user" | "assistant";
 
-export type Message<R extends MessageRole = MessageRole> = { role: R; content: string };
+export type BaseChatMessage<R extends BaseChatMessageRole = BaseChatMessageRole> = {
+	role: R;
+	content: string;
+};

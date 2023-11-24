@@ -1,48 +1,53 @@
 import debug from "debug";
 import type { OpenAI } from "openai";
 import type { z } from "zod";
-import { zodToJsonSchema } from "zod-to-json-schema";
-import { printNode, zodToTs } from "zod-to-ts";
+import { DefaultJSON, VisionJSON } from "./format/json";
 import { OpenAIQuery } from "./query/openai";
-import type { AidInput, AidTaskOptions, AidTaskRunner, LLMQuery, Message } from "./types";
+import { ChatTask } from "./task/chat";
+import { VisionChatTask } from "./task/vision-chat";
+import type {
+	AidTaskOptions,
+	AidTaskRunner,
+	BaseChatMessage,
+	BaseChatParam,
+	FormatEngine,
+	QueryEngine,
+	TaskBuilder,
+	VisionChatParam,
+} from "./types";
 
 const log = debug("aid");
 
-export class Aid {
-	constructor(protected q: LLMQuery) {}
+export class Aid<TaskGoal, CaseParam, FormatPayload, QueryPayload> {
+	protected qe: QueryEngine<QueryPayload>;
+	protected fe: FormatEngine<FormatPayload, QueryPayload>;
+	protected tb: TaskBuilder<TaskGoal, CaseParam, FormatPayload>;
+
+	constructor(
+		qe: QueryEngine<QueryPayload>,
+		fe: FormatEngine<FormatPayload, QueryPayload>,
+		tb: TaskBuilder<TaskGoal, CaseParam, FormatPayload>,
+	) {
+		this.qe = qe;
+		this.fe = fe;
+		this.tb = tb;
+	}
 
 	task<Out>(
-		goal: string,
+		goal: TaskGoal,
 		expected: z.ZodType<Out>,
-		opt?: AidTaskOptions<Out>,
-	): AidTaskRunner<Out> {
-		const default_input: AidInput =
-			opt?.default ?? "Follows the instruction and give me the disired output.";
-		return async (input = default_input) => {
-			const messages: Message[] = [
-				{
-					role: "system",
-					content:
-						goal +
-						"\nResponse in JSON format:\n" +
-						(opt?.strategy === "ts"
-							? printNode(zodToTs(expected).node)
-							: JSON.stringify(zodToJsonSchema(expected), null, 2)),
-				},
-			];
+		opt?: AidTaskOptions<CaseParam, Out>,
+	): AidTaskRunner<CaseParam, Out> {
+		return async (input = opt?.default) => {
+			const fp = await this.tb(goal, input, opt?.examples ?? []);
+			log("fp", fp);
 
-			if (opt?.examples) {
-				for (const [input, output] of opt.examples) {
-					messages.push({ role: "user", content: input });
-					messages.push({ role: "assistant", content: JSON.stringify(output) });
-				}
-			}
+			const qp = await this.fe(fp, expected);
+			log("qp", qp);
 
-			messages.push({ role: "user", content: input });
-
-			log("messages", messages);
-			const output = await this.q(messages);
+			const output = await this.qe(qp);
 			log("output", output);
+
 			const json = JSON.parse(output);
 
 			if (!opt?.check) {
@@ -61,8 +66,44 @@ export class Aid {
 	static from(
 		openai: OpenAI,
 		param: Omit<OpenAI.Chat.ChatCompletionCreateParamsNonStreaming, "messages">,
-	): Aid {
-		const q = OpenAIQuery(openai, param);
-		return new Aid(q);
+	): Aid<string, BaseChatParam, BaseChatMessage[], BaseChatMessage[]> {
+		const qe = OpenAIQuery(openai, param);
+		const fe = DefaultJSON({ strategy: "json-schema" });
+		const tb = ChatTask();
+		return new Aid(qe, fe, tb);
+	}
+
+	static chat(
+		qe: QueryEngine<BaseChatMessage[]>,
+		{
+			tb = ChatTask(),
+			fe = DefaultJSON({ strategy: "json-schema" }),
+		}: {
+			tb?: TaskBuilder<string, BaseChatParam, BaseChatMessage[]>;
+			fe?: FormatEngine<BaseChatMessage[], BaseChatMessage[]>;
+		} = {},
+	): Aid<string, BaseChatParam, BaseChatMessage[], BaseChatMessage[]> {
+		return new Aid(qe, fe, tb);
+	}
+
+	static vision(
+		qe: QueryEngine<OpenAI.Chat.ChatCompletionMessageParam[]>,
+		{
+			tb = VisionChatTask(),
+			fe = VisionJSON({ strategy: "json-schema" }),
+		}: {
+			tb?: TaskBuilder<string, VisionChatParam, OpenAI.Chat.ChatCompletionMessageParam[]>;
+			fe?: FormatEngine<
+				OpenAI.Chat.ChatCompletionMessageParam[],
+				OpenAI.Chat.ChatCompletionMessageParam[]
+			>;
+		} = {},
+	): Aid<
+		string,
+		VisionChatParam,
+		OpenAI.Chat.ChatCompletionMessageParam[],
+		OpenAI.Chat.ChatCompletionMessageParam[]
+	> {
+		return new Aid(qe, fe, tb);
 	}
 }
