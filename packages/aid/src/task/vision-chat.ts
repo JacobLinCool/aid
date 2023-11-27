@@ -25,8 +25,9 @@ export const VisionChatTask = (): TaskBuilder<
 			const content: OpenAI.Chat.Completions.ChatCompletionContentPart[] = [];
 			if (input.text) {
 				content.push({ type: "text", text: input.text });
-			} else if (input.images) {
-				for (let image of input.images) {
+			}
+			if (input.images) {
+				for (const image of input.images) {
 					content.push({ type: "image_url", image_url: image });
 				}
 			}
@@ -42,8 +43,9 @@ export const VisionChatTask = (): TaskBuilder<
 			const content: OpenAI.Chat.Completions.ChatCompletionContentPart[] = [];
 			if (input.text) {
 				content.push({ type: "text", text: input.text });
-			} else if (input.images) {
-				for (let image of input.images) {
+			}
+			if (input.images) {
+				for (const image of input.images) {
 					content.push({ type: "image_url", image_url: image });
 				}
 			}
