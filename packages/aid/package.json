@@ -1,7 +1,7 @@
 {
 	"name": "@ai-d/aid",
 	"description": "Aid provides a structured and type-safe way to interact with LLMs.",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"author": "JacobLinCool <jacoblincool@gmail.com> (https://jacoblin.cool)",
 	"license": "MIT",
 	"keywords": [

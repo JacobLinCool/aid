@@ -1,5 +1,11 @@
 # @ai-d/aid
 
+## 0.1.1
+
+### Patch Changes
+
+-   [`4cc0b32`](https://github.com/JacobLinCool/aid/commit/4cc0b32066e900ffa2a93779c7af3f74e2f5af00) Thanks [@JacobLinCool](https://github.com/JacobLinCool)! - Add an post-processor for markdown code fences
+
 ## 0.1.0
 
 ### Minor Changes
