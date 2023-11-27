@@ -2,6 +2,7 @@ import debug from "debug";
 import type { OpenAI } from "openai";
 import type { z } from "zod";
 import { DefaultJSON, VisionJSON } from "./format/json";
+import { post_process } from "./post-process";
 import { OpenAIQuery } from "./query/openai";
 import { ChatTask } from "./task/chat";
 import { VisionChatTask } from "./task/vision-chat";
@@ -48,7 +49,10 @@ export class Aid<TaskGoal, CaseParam, FormatPayload, QueryPayload> {
 			const output = await this.qe(qp);
 			log("output", output);
 
-			const json = JSON.parse(output);
+			const post = post_process(output);
+			log("post-processed", post);
+
+			const json = JSON.parse(post);
 
 			if (!opt?.check) {
 				return { result: json, errors: [] };
