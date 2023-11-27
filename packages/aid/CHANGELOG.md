@@ -1,5 +1,11 @@
 # @ai-d/aid
 
+## 0.1.3
+
+### Patch Changes
+
+-   [`950a15a`](https://github.com/JacobLinCool/aid/commit/950a15abe75124ab6ae97423840954ca5c662eb0) Thanks [@JacobLinCool](https://github.com/JacobLinCool)! - Fix vision chat with both text and image
+
 ## 0.1.2
 
 ### Patch Changes
