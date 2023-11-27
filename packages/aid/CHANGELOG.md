@@ -1,5 +1,11 @@
 # @ai-d/aid
 
+## 0.1.2
+
+### Patch Changes
+
+-   [`c99509e`](https://github.com/JacobLinCool/aid/commit/c99509edd72480a3db365c6a5c93f1ff7c515e34) Thanks [@JacobLinCool](https://github.com/JacobLinCool)! - Align format instruction DefaultJSON to VisionJSON
+
 ## 0.1.1
 
 ### Patch Changes
