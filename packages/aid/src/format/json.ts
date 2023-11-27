@@ -3,6 +3,11 @@ import zodToJsonSchema from "zod-to-json-schema";
 import { printNode, zodToTs } from "zod-to-ts";
 import type { BaseChatMessage, FormatEngine } from "../types";
 
+const instruction = (strategy?: "ts" | "json-schema") =>
+	`\nResponse in JSON format (without other words or code fences) that follows the ${
+		strategy === "ts" ? "TypeScript type" : "JSON Schema"
+	}:\n`;
+
 export const DefaultJSON = (opt: {
 	strategy?: "ts" | "json-schema";
 }): FormatEngine<BaseChatMessage[], BaseChatMessage[]> => {
@@ -14,7 +19,7 @@ export const DefaultJSON = (opt: {
 			messages.unshift(system);
 		}
 		system.content +=
-			"\nResponse in JSON format that follows the schema:\n" +
+			instruction(opt?.strategy) +
 			(opt?.strategy === "ts"
 				? printNode(zodToTs(schema).node)
 				: JSON.stringify(zodToJsonSchema(schema), null, 2));
@@ -39,9 +44,7 @@ export const VisionJSON = (opt: {
 		}
 
 		const prompt =
-			`\nResponse in JSON format (without other words or code fences) that follows the ${
-				opt.strategy === "ts" ? "TypeScript type" : "JSON Schema"
-			}:\n` +
+			instruction(opt?.strategy) +
 			(opt?.strategy === "ts"
 				? printNode(zodToTs(schema).node)
 				: JSON.stringify(zodToJsonSchema(schema), null, 2));
