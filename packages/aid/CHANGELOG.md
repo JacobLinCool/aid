@@ -1,5 +1,11 @@
 # @ai-d/aid
 
+## 0.1.5
+
+### Patch Changes
+
+-   [`be51bbf`](https://github.com/JacobLinCool/aid/commit/be51bbfc6c9b7359570ccf9932bb6589152a421e) Thanks [@JacobLinCool](https://github.com/JacobLinCool)! - fix bundle issue with ts schema
+
 ## 0.1.4
 
 ### Patch Changes
