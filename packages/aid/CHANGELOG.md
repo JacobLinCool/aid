@@ -1,5 +1,11 @@
 # @ai-d/aid
 
+## 0.1.4
+
+### Patch Changes
+
+-   [`188d7ff`](https://github.com/JacobLinCool/aid/commit/188d7ffeed3950e6481273ddbda53116a6043325) Thanks [@JacobLinCool](https://github.com/JacobLinCool)! - move ts schema dep to optional peer dep
+
 ## 0.1.3
 
 ### Patch Changes
