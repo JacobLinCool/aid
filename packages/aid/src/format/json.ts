@@ -1,6 +1,5 @@
 import type { OpenAI } from "openai";
 import zodToJsonSchema from "zod-to-json-schema";
-import { printNode, zodToTs } from "zod-to-ts";
 import type { BaseChatMessage, FormatEngine } from "../types";
 
 const instruction = (strategy?: "ts" | "json-schema") =>
@@ -12,6 +11,9 @@ export const DefaultJSON = (opt: {
 	strategy?: "ts" | "json-schema";
 }): FormatEngine<BaseChatMessage[], BaseChatMessage[]> => {
 	return async (messages, schema) => {
+		const ts_module = "zod-to-ts";
+		const ts = opt?.strategy === "ts" ? await import(ts_module) : {};
+
 		// find system message and append the schema
 		let system = messages.find((m) => m.role === "system");
 		if (!system) {
@@ -21,7 +23,7 @@ export const DefaultJSON = (opt: {
 		system.content +=
 			instruction(opt?.strategy) +
 			(opt?.strategy === "ts"
-				? printNode(zodToTs(schema).node)
+				? ts.printNode(ts.zodToTs(schema).node)
 				: JSON.stringify(zodToJsonSchema(schema), null, 2));
 		system.content = system.content.trim();
 
@@ -36,6 +38,9 @@ export const VisionJSON = (opt: {
 	OpenAI.Chat.ChatCompletionMessageParam[]
 > => {
 	return async (messages, schema) => {
+		const ts_module = "zod-to-ts";
+		const ts = opt?.strategy === "ts" ? await import(ts_module) : {};
+
 		// find system message and append the schema
 		let system = messages.find((m) => m.role === "system");
 		if (!system) {
@@ -46,7 +51,7 @@ export const VisionJSON = (opt: {
 		const prompt =
 			instruction(opt?.strategy) +
 			(opt?.strategy === "ts"
-				? printNode(zodToTs(schema).node)
+				? ts.printNode(ts.zodToTs(schema).node)
 				: JSON.stringify(zodToJsonSchema(schema), null, 2));
 
 		if (typeof system.content === "string") {
