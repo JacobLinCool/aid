@@ -36,12 +36,17 @@
 	},
 	"dependencies": {
 		"debug": "^4.3.4",
-		"zod-to-json-schema": "^3.22.0",
-		"zod-to-ts": "^1.2.0"
+		"zod-to-json-schema": "^3.22.0"
 	},
 	"peerDependencies": {
 		"openai": "^4.0.0",
-		"zod": "^3.0.0"
+		"zod": "^3.0.0",
+		"zod-to-ts": "^1.2.0"
+	},
+	"peerDependenciesMeta": {
+		"zod-to-ts": {
+			"optional": true
+		}
 	},
 	"devDependencies": {
 		"@types/debug": "^4.1.12",
