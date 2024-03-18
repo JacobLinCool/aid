@@ -39,5 +39,5 @@
 		"url": "https://github.com/JacobLinCool/aid/issues"
 	},
 	"homepage": "https://jacoblincool.github.io/aid",
-	"packageManager": "pnpm@8.10.5"
+	"packageManager": "pnpm@8.15.5"
 }
